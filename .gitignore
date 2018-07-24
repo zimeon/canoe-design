@@ -1,0 +1,7 @@
+.cache/
+__pycache__
+*.pyc
+*~
+new.md
+plans.pdf
+fig.pdf
