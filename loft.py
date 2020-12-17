@@ -61,8 +61,8 @@ if (args.set_stations):
                             (hull.min_max_length(round_out=False)[1] - 6.0),
                             args.station_sep)
     heights = [1.0, 2.0, 3.0, 4.5, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0]
-    print("Calling set_stations(\n  stations=" + str(stations) +
-          ",\n  height=" + str(heights) + " )")
+    print("Calling set_stations(\n  stations=" + str(stations)
+          + ",\n  height=" + str(heights) + " )")
     hull.set_stations(stations, heights)
     print(hull.summary_stats())
 

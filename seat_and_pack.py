@@ -1,8 +1,8 @@
 #!/usr/bin/python
-#
-# Canoe seat and pack positions, see SEAT_AND_PACK_POSITIONS.md.
-#
-# All dimensions in inches, weights in pounds
+"""Canoe seat and pack positions, see SEAT_AND_PACK_POSITIONS.md.
+
+All dimensions in inches, weights in pounds
+"""
 
 la = None
 wa = 180
@@ -16,7 +16,9 @@ pl = 27  # pack length
 
 lb = 82
 
+
 def print_row(values, format="%7s", comment=None):
+    """Print one row of data."""
     s = "  ".join([(format % x) for x in values])
     if comment is not None:
         s += "  " + comment

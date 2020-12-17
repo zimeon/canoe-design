@@ -81,7 +81,7 @@ class FairCurve(object):
             xx.append(x)
             yy.append(y)
             if (i == int(i)):
-                logging.debug("  i=%g |x'''|=%.3f" % (i, math.sqrt(sum([x*x for x in self.spline(i, 3)]))))
+                logging.debug("  i=%g |x'''|=%.3f" % (i, math.sqrt(sum([x * x for x in self.spline(i, 3)]))))
         return(xx, yy)
 
     def length(self, start=0, end=None, step=None):

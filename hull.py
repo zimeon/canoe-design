@@ -175,14 +175,14 @@ class Hull(object):
         Sets the self.station_positions hash which maps station labels (integer) into
         positions along the x or length axis.
         """
-        title_line = re.split('\s+', data.pop(0))
+        title_line = re.split(r'\s+', data.pop(0))
         title = title_line.pop(0)
         if (title != 'Station'):
             raise Exception("First line of breadths must start with Station, got '%s'" % (title))
         stations = [int(x) for x in title_line]
         # OPTIONAL Positions line (else assume 1' spacing)
         if (data[0].startswith('Position')):
-            position_line = re.split('\s+', data.pop(0))
+            position_line = re.split(r'\s+', data.pop(0))
             position_line.pop(0)  # already checked this, discard
             for station in stations:
                 self.station_positions[station] = self.parse_dimension(position_line.pop(0))
@@ -191,14 +191,14 @@ class Hull(object):
             for s in stations:
                 self.station_positions[s] = float(s) * 12.0
         # Sheer line
-        sheer_line = re.split('\s+', data.pop(0))
+        sheer_line = re.split(r'\s+', data.pop(0))
         title = sheer_line.pop(0)
         if (title != 'Sheer'):
             raise Exception("Second line of breadths must start with Sheer or Position, got '%s'" % (title))
         for station in stations:
             self.sheer_height[station] = self.parse_dimension(sheer_line.pop(0))
         # Profile line (last)
-        profile_line = re.split('\s+', data.pop())
+        profile_line = re.split(r'\s+', data.pop())
         title = profile_line.pop(0)
         if (title != 'Profile'):
             raise Exception("Last line of breadths must start with Profile, got '%s'" % (title))
@@ -208,7 +208,7 @@ class Hull(object):
         for s in stations:
             self.heights[s] = []
         for line in data:
-            entries = re.split('\s+', line)
+            entries = re.split(r'\s+', line)
             butt = self.parse_dimension(entries.pop(0))
             for station in stations:
                 height = self.parse_dimension(entries.pop(0))
@@ -222,7 +222,7 @@ class Hull(object):
         Checks that the set of stations is the same as the set of stations already read from the table
         of heights in read_heights().
         """
-        title_line = re.split('\s+', data.pop(0))
+        title_line = re.split(r'\s+', data.pop(0))
         title = title_line.pop(0)
         if (title != 'Station'):
             raise Exception("First line of breadths must start with Station, got '%s'" % (title))
@@ -230,7 +230,7 @@ class Hull(object):
         if (set(stations) != set(self.stations)):
             raise Exception("Stations in breadths don't match stations in heights!")
         # Sheer line
-        sheer_line = re.split('\s+', data.pop(0))
+        sheer_line = re.split(r'\s+', data.pop(0))
         title = sheer_line.pop(0)
         if (title != 'Sheer'):
             raise Exception("Second line of breadths must start with Sheer, got '%s'" % (title))
@@ -240,7 +240,7 @@ class Hull(object):
         for s in stations:
             self.breadths[s] = []
         for line in data:
-            entries = re.split('\s+', line)
+            entries = re.split(r'\s+', line)
             vertical = self.parse_dimension(entries.pop(0))
             for station in stations:
                 horizontal = self.parse_dimension(entries.pop(0))
@@ -256,7 +256,7 @@ class Hull(object):
         Where sr and br are the reference stations for stern and bow respectively
         and the #l are horizontal distances at the give heights from the stations.
         """
-        title_line = re.split('\s+', data.pop(0))
+        title_line = re.split(r'\s+', data.pop(0))
         title = title_line.pop(0)
         if (title != 'Station'):
             raise Exception("First line of end profile must start with Station, got '%s'" % (title))
@@ -267,7 +267,7 @@ class Hull(object):
         brl = self.station_positions[int(br)]
         flip = 1.0 if (brl < srl) else -1.0  # Handle bow-stern oreintation along x
         for line in data:
-            entries = re.split('\s+', line)
+            entries = re.split(r'\s+', line)
             vertical = self.parse_dimension(entries.pop(0))
             x = self.parse_dimension(entries.pop(0))
             if (x is not None):
@@ -285,8 +285,8 @@ class Hull(object):
         """Make fixed-width string for dimension x."""
         if (x is None):
             return(self._format_label('-', left_align))
-        fmt = ('%' + ('-' if left_align else '') + str(self.cell_width) +
-               '.' + str(self.decimal_places) + 'f')
+        fmt = ('%' + ('-' if left_align else '') + str(self.cell_width)
+               + '.' + str(self.decimal_places) + 'f')
         return(fmt % x)
 
     def write(self, filename):
@@ -773,8 +773,8 @@ class Hull(object):
         """
         for s in self.stations:
             logging.warn('add_breadths_at_height station %s' % (s))
-            if (height >= self.sheer_height[s] or
-                    height <= self.profile_height[s]):
+            if (height >= self.sheer_height[s]
+                    or height <= self.profile_height[s]):
                 # Not in range of heights for this station, nothing to do
                 continue
             try:
@@ -901,9 +901,9 @@ class Hull(object):
         # else use ft-inches-eigths format
         m = re.match(r'''(\d+)\-(\d+)\-(\d)(\d|\+)?''', s)
         if (m):
-            return(float(m.group(1)) * 12.0 + float(m.group(2)) +
-                   float(m.group(3)) / 8.0 +
-                   (0.0625 if m.group(4) == '+' else (0.0 if m.group(4) is None else int(m.group(4)) / 80.0)))
+            return(float(m.group(1)) * 12.0 + float(m.group(2))
+                   + float(m.group(3)) / 8.0
+                   + (0.0625 if m.group(4) == '+' else (0.0 if m.group(4) is None else int(m.group(4)) / 80.0)))
         raise Exception("Bad dimemsion '%s'" % (s))
 
     def offset_scale_vertical(self, offset=0.0, scale=1.0):
@@ -999,9 +999,9 @@ class Hull(object):
         xx, ww, yy, labels = self.sheer_curve_3d()
         l = 0.0
         for i in range(0, len(xx) - 1):
-            l += math.sqrt((xx[i] - xx[i + 1]) ** 2 +
-                           (ww[i] - ww[i + 1]) ** 2 +
-                           (yy[i] - yy[i + 1]) ** 2)
+            l += math.sqrt((xx[i] - xx[i + 1]) ** 2
+                           + (ww[i] - ww[i + 1]) ** 2
+                           + (yy[i] - yy[i + 1]) ** 2)
         return(l)
 
     def beam_sheer(self):
@@ -1049,8 +1049,7 @@ class Hull(object):
         xx, yy = self.breadth_curve(self.mid_station)
         for w, y in zip(xx, yy):
             if (last_w is not None):
-                l += math.sqrt((w - last_w) ** 2 +
-                               (y - last_y) ** 2)
+                l += math.sqrt((w - last_w) ** 2 + (y - last_y) ** 2)
             last_w = w
             last_y = y
         return(l * 2.0)

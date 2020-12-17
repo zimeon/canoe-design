@@ -76,11 +76,11 @@ class Region(object):
     def __eq__(self, other):
         """Define equality based on limits with other Region or list."""
         if (isinstance(other, Region)):
-            return(self.min_x == other.min_x and self.max_x == other.max_x and
-                   self.min_y == other.min_y and self.max_y == other.max_y)
+            return(self.min_x == other.min_x and self.max_x == other.max_x
+                   and self.min_y == other.min_y and self.max_y == other.max_y)
         else:  # assume list
-            return(self.min_x == other[0] and self.max_x == other[1] and
-                   self.min_y == other[2] and self.max_y == other[3])
+            return(self.min_x == other[0] and self.max_x == other[1]
+                   and self.min_y == other[2] and self.max_y == other[3])
 
     def __repr__(self):
         """String representation."""
@@ -410,19 +410,19 @@ class Plotter(object):
                 return
         # else sheer point?
         if (w == self.hull.sheer_breadth[s] and y == self.hull.sheer_height[s]):
-                self.selected.x += dx
-                self.selected.y += dy
-                self.hull.sheer_breadth[s] = self.selected.x
-                self.hull.sheer_height[s] = self.selected.y
-                self.hull._reset_lazy_calcs()
-                return
+            self.selected.x += dx
+            self.selected.y += dy
+            self.hull.sheer_breadth[s] = self.selected.x
+            self.hull.sheer_height[s] = self.selected.y
+            self.hull._reset_lazy_calcs()
+            return
         if (w == -self.hull.sheer_breadth[s] and y == self.hull.sheer_height[s]):
-                self.selected.x += dx
-                self.selected.y += dy
-                self.hull.sheer_breadth[s] = -self.selected.x
-                self.hull.sheer_height[s] = self.selected.y
-                self.hull._reset_lazy_calcs()
-                return
+            self.selected.x += dx
+            self.selected.y += dy
+            self.hull.sheer_breadth[s] = -self.selected.x
+            self.hull.sheer_height[s] = self.selected.y
+            self.hull._reset_lazy_calcs()
+            return
         logging.warn("Failed to match point in move_point_width_profile")
 
     def plot_station(self, station, ax, region=None):

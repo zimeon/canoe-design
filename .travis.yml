@@ -1,0 +1,12 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+install:
+  - pip install pycodestyle pep257
+script:
+  - pytest
+  - pycodestyle --ignore=E501,E741,W503 *.py
+  - pep257 *.py
