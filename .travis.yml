@@ -5,7 +5,8 @@ python:
   - "3.7"
   - "3.8"
 install:
-  - pip install pycodestyle pep257
+  - pip install pycodestyle pep257 pytest
+  - pip install -r REQUIREMENTS.txt
 script:
   - pytest
   - pycodestyle --ignore=E501,E741,W503 *.py
